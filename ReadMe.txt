@@ -1,8 +1,8 @@
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ColourSpy
 ¯¯¯¯¯¯¯¯¯
-Version 1.0
-Thursday, 21 August 2003
+Version 1.1
+Friday, 22 August 2003
 ________________________________________________________________________
 
 What?
@@ -20,7 +20,7 @@ underneath the mouse cursor, as well as displaying the colour itself, so
 that you know you have the right pixel. It will do this while the Ctrl
 key is held down.
 
-Once you have your desired colour, you can copy either the RGB or hax
+Once you have your desired colour, you can copy either the RGB or hex
 values to the clipboard.
 ________________________________________________________________________
 
@@ -94,6 +94,14 @@ ________________________________________________________________________
 
 Version History
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+v1.1 (22/8/2003)
+* Bar import file:
+  * Removed redundant lines
+* Bar:
+  * Removed right-click functionality of Close button
+* Documentation:
+  * Corrected typo
+
 v1.0 (21/8/2003)
 * Initial Release
 ________________________________________________________________________

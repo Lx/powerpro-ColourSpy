@@ -1,5 +1,5 @@
-; ColourSpy v1.0
-; Written by Alex Peters, 21/8/2003
+; ColourSpy v1.1
+; Written by Alex Peters, 22/8/2003
 ; ______________________________________________________________________
 
 @Toggle
