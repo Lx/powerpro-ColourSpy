@@ -1,7 +1,7 @@
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ColourSpy
 ¯¯¯¯¯¯¯¯¯
-Version 1.1
+Version 1.2
 Friday, 22 August 2003
 ________________________________________________________________________
 
@@ -39,17 +39,24 @@ ________________________________________________________________________
 
 Installation
 ¯¯¯¯¯¯¯¯¯¯¯¯
-1. Extract the ColourSpy.icl file into the folder where your PowerPro
+1. If you already have a copy of ColourSpy installed in your PowerPro
+   configuration:
+
+   * Remove the ColourSpy bar from your configuration.
+   * Remove the ColourSpy.txt file from your Scripts folder.
+   * Remove the ColourSpy.icl file from your PowerPro folder.
+
+2. Extract the ColourSpy.icl file into the folder where your PowerPro
    configuration (.PCF file) is located.
    (Usually ‘C:\Program Files\PowerPro’)
 
-2. Extract the ColourSpy.txt file into your Scripts folder.
+3. Extract the ColourSpy.txt file into your Scripts folder.
    (Usually ‘C:\Program Files\PowerPro\Scripts’)
 
-3. Import the ColourSpyBar.txt file into your chosen PowerPro
+4. Import the ColourSpyBar.txt file into your chosen PowerPro
    configuration.
 
-4. Set up a method of showing the bar. The bar can be toggled using the
+5. Set up a method of showing the bar. The bar can be toggled using the
    PowerPro command ‘.ColourSpy@Toggle’.
 
 The ColourSpy bar will not function if ‘Auto Show as Bar’ is ticked, or
@@ -94,6 +101,14 @@ ________________________________________________________________________
 
 Version History
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+v1.2 (22/8/2003)
+* Bar:
+  * Introduced mouse co-ordinates section
+* Script:
+  * Improved bar formatting code
+* Documentation:
+  * Added installation step for upgrading
+
 v1.1 (22/8/2003)
 * Bar import file:
   * Removed redundant lines

@@ -1,4 +1,4 @@
-; ColourSpy v1.1
+; ColourSpy v1.2
 ; Written by Alex Peters, 22/8/2003
 ; ______________________________________________________________________
 
@@ -21,39 +21,37 @@ Quit
 
 @Update
 
-    If(Not ColourSpyBegin) Do
-
-        ColourSpyBegin = 1
-
-        *Format Item List ColourSpy Item 4 Hide 0
-        *Format Item List ColourSpy Item 5 Hide 0
-        *Format Item List ColourSpy Item 6 Hide 0
-        *Format Item List ColourSpy Item 7 Hide 0
-        *Format Item List ColourSpy Item 8 Hide 0
-        *Format Item List ColourSpy Item 9 Hide 0
-        *Format Item List ColourSpy Item 10 Hide 0
-        *Format Item List ColourSpy Item 11 Hide 0
-        *Format Item List ColourSpy Item 12 Hide 0
-        *Format Item List ColourSpy Item 13 Hide 1
-
-    EndIf
-
     Static Pixel = Win.GetPixel(XMouse, YMouse)
+    Static MousePos = XMouse ++ " " ++ YMouse
 
-    Do("Format Item List ColourSpy Item 4 OwnBack 1 " ++ '+
+    Do("Format Item List ColourSpy Item 4 Text", "'"" ++ '+
+        Word(MousePos, 1) ++ ", " ++ Word(MousePos, 2) ++ "'"")
+
+    Do("Format Item List ColourSpy Item 7 OwnBack 1 " ++ '+
         "ColorBack", (256 * ((256 * Word(Pixel, 3)) + Word(Pixel, '+
         2))) + Word(Pixel, 1))
 
-    Do("Format Item List ColourSpy Item 6 Text", " " ++ '+
+    Do("Format Item List ColourSpy Item 9 Text", " " ++ '+
         Word(Pixel, 1) ++ ",")
-    Do("Format Item List ColourSpy Item 7 Text", Word(Pixel, '+
+    Do("Format Item List ColourSpy Item 10 Text", Word(Pixel, '+
         2) ++ ",")
-    Do("Format Item List ColourSpy Item 8 Text", Word(Pixel, '+
+    Do("Format Item List ColourSpy Item 11 Text", Word(Pixel, '+
         3))
 
     Static Hex = Fill("#000000", .ColourSpy@Hex((256 * ((256 * '+
         Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
-    Do("Format Item List ColourSpy Item 11 Text", " " ++ Hex)
+    Do("Format Item List ColourSpy Item 14 Text", " " ++ Hex)
+
+    If(Not ColourSpyBegin) Do
+
+        ColourSpyBegin = 1
+
+        For(Local Iter = 4; Iter < 16; Iter = Iter + 1)
+            Do("*Format Item List ColourSpy Hide 0 Item", Iter)
+        EndFor
+        *Format Item List ColourSpy Item 16 Hide 1
+
+    EndIf
 
 Quit
 
@@ -69,6 +67,13 @@ Quit
 
     Static Hex
     Clip.Set(Hex)
+
+Quit
+
+@CopyPos
+
+    Clip.Set("X: " ++ Word(MousePos, 1) ++ "; Y: " ++ '+
+        Word(MousePos, 2))
 
 Quit
 

@@ -8,11 +8,19 @@ F 8192 4 16711680 0
 L 50000 .ColourSpy@Toggle !`
 "" *None
 L 50000 *Format BarVerticalLine!`
+"" 3,ColourSpy.icl*None
+F 8256 78 16711680 0
+"" 2,ColourSpy.icl*Copy mouse co-ordinates to clipboard
+L 50000 .ColourSpy@CopyPos !`
+F 96 20 16711680 0
+"" *None
+L 50000 *Format BarVerticalLine!`
+F 64 0 0 16777215
 "" *None
 F 8256 16 255 0
 "" *None
 L 50000 *Format BarVerticalLine!`
-F 64 0 0 0
+F 64 0 0 16777215
 "" *None
 F 8288 27 255 0
 "" *None
@@ -24,11 +32,11 @@ L 50000 .ColourSpy@CopyRGB !`
 F 96 20 16711680 0
 "" *None
 L 50000 *Format BarVerticalLine!`
-F 64 0 0 0
+F 64 0 0 16777215
 "" *None
 F 8256 55 16711680 0
 "" 2,ColourSpy.icl*Copy hex value to clipboard
 L 50000 .ColourSpy@CopyHex !`
 F 96 20 16711680 0
 " Hold Ctrl to capture colours." *ColourSpy v1.0 — Written by Alex Peters
-F 8192 204 16711680 0
+F 8192 311 16711680 0
