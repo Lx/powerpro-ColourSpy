@@ -1,8 +1,8 @@
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ColourSpy
 ¯¯¯¯¯¯¯¯¯
-Version 2.0
-Monday, 10 November 2003
+Version 3.0
+Saturday, 10 July 2004
 ________________________________________________________________________
 
 What?
@@ -26,50 +26,57 @@ ________________________________________________________________________
 
 Requirements
 ¯¯¯¯¯¯¯¯¯¯¯¯
-This bar uses a revised version of the Win plugin, which by default is
-not included in installations of PowerPro v3.8 and under. You can find
-the new version of this plugin at:
-
-> http://www.windowspowerpro.com/download/win.zip
-
-The ‘Use Quote for Escape in Expression Strings’ checkbox, found under
-Setup > Advanced Setup > Characters, must be ticked for the script to
-work. This option is not ticked by default.
+The scripts in this package use features found only in PowerPro versions
+v3.8.16 and above. The scripts conform to standard configuration, so you
+must have the appropriate option selected in your Advanced Setup.
 ________________________________________________________________________
 
 Installation
 ¯¯¯¯¯¯¯¯¯¯¯¯
 1. If you already have a copy of ColourSpy installed in your PowerPro
-   configuration, then you may wish to remove:
+   configuration, then you will need to completely remove it since this
+   version uses an entirely different approach.
 
-   * the ColourSpy.txt file from your Scripts folder
-   * the ColourSpy.icl file from your PowerPro folder
+   * Remove all references to the ColourSpy bar from your hotkeys and
+     other bars.
+   * Remove the ColourSpy command list from your configuration.
+   * Delete the ColourSpy subfolder from your Skins folder.
 
-   as these files are no longer used.
+2. Extract ColourSpy.PowerPro to your Scripts folder, e.g.:
+   C:\Program Files\PowerPro\Scripts\ColourSpy.PowerPro
 
-2. Extract the contents of the archive into a temporary folder and
-   double-click the Install script. PowerPro must be running in order
-   to do this.
+3. Create a folder named ColourSpy under your Skins folder, e.g.:
+   C:\Program Files\PowerPro\Skins\ColourSpy
 
-The installation script will attempt to detect the current configuration
-and assume that you would like to install ColourSpy to this .PCF file,
-but you have the option of selecting your own .PCF file during the
-installation.
+3. Extract Back.bmp and Skin.txt to this newly created folder, e.g.:
+   C:\Program Files\PowerPro\Skins\ColourSpy\Back.bmp
+   C:\Program Files\PowerPro\Skins\ColourSpy\Skin.txt
+
+4. Optionally modify the BarPosSavePath variable to point to your
+   desired location. This path will hold the position of the ColourSpy
+   bar across PowerPro sessions.
+________________________________________________________________________
+
+Invoking
+¯¯¯¯¯¯¯¯
+Set up a hotkey or bar button to execute the following command, assuming
+that you haven't renamed the script:
+
+.ColourSpy
+
+This will open the ColourSpy bar if it is not already open, or close it
+otherwise.
 ________________________________________________________________________
 
 Usage
 ¯¯¯¯¯
-The ColourSpy bar can be shown and hidden like any normal PowerPro bar,
-through the use of *Bar Show, *Bar Hide, etc. commands. It can also be
-set to ‘Auto Show as Bar’, should you wish.
-
 Hold down the Ctrl key for the bar to capture colours.
 
-Click on any numerical elements to copy those elements to the clipboard.
+Click on any informational elements to copy those elements to the
+clipboard.
 
-To move the ColourSpy bar to a new position on screen, hold down the
-Ctrl key and drag. A later version will include the ability to drag the
-title text, similar to standard windows.
+To move the ColourSpy bar to a new position on screen, drag the title
+text or the colour patch.
 ________________________________________________________________________
 
 To Conclude
@@ -85,7 +92,8 @@ PowerPro Yahoo! group, at:
 that I'll see it just as quickly.
 
 Thanks to David Troesch for testing, and logical thought patterns, and
-to Bruce for coming up with a great hex conversion script.
+to Bruce for coming up with the foundation for a great hex conversion
+script.
 
 Best regards,
 Alex Peters
@@ -93,6 +101,19 @@ ________________________________________________________________________
 
 Version History
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+v3.0 (10/7/2004)
+* Bar:
+  * The bar is no longer stored in the .PCF and so a script call is now
+    required again to show and hide the bar -- *Bar Show, *Bar Hide,
+    etc. commands will no longer work
+  * Clicking on empty information fields now results in an explanation
+    message being displayed instead of an error
+  * Added the ability to drag the bar from the colour patch
+* Script:
+  * Complete rewrite
+* Documentation:
+  * Split Usage section into Invoking and Usage sections
+
 v2.0 (10/11/2003)
 * Bar:
   * Complete visual redesign -- a skin is now used for greater control

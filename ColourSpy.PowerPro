@@ -1,0 +1,285 @@
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; ColourSpy v3.0
+; Written by Alex Peters, 10/7/2004
+; ______________________________________________________________________
+
+; ColourSpy will save the position of its bar to the location specified
+; below.
+
+Static BarPosSavePath = PProFolder ++ "CS_BarPosSave.txt"
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The CmdList variable holds the name of the command list that is
+; created to hold the ColourSpy bar. If it contains a value when the
+; script is called then a ColourSpy bar is open, and we should close it.
+
+Static CmdList
+
+If(CmdList) Do
+    CmdList = CL.RemoveAll(CmdList)
+    Quit
+EndIf
+
+; If we reach this point, then a ColourSpy bar is not open and so we
+; should get to work creating one. Firstly, we need a unique command
+; list name for the bar -- ‘ColourSpy’ should do but if that is already
+; in use, find an available name in the form of ‘ColourSpy_XXX’ where
+; XXX is a random 3-digit number.
+
+For(CmdList = "ColourSpy"; CL.Exists(CmdList))
+    CmdList = "ColourSpy_" ++ (Random(900) + 100)
+EndFor
+CL.Create(CmdList)
+
+; If the ColourSpy bar's position is stored in memory then we will
+; position the bar there. If not, then we will check to see if it has
+; been previously saved and use that position. If no saved position
+; exists then we will default to displaying the bar in the middle of the
+; screen.
+
+Static BarPos
+If(BarPos == "") Do
+    If(ValidPath(BarPosSavePath)) Do
+        BarPos = File.ReadAll(BarPosSavePath)
+    Else
+        BarPos = "&((XScreen - 135) / 2) &((YScreen - 187) / 2)"
+    EndIf
+EndIf
+
+; Set some properties for the bar including its skin file, its position,
+; etc.
+
+CL.SetProperties(CmdList, "Skin=ColourSpy\\Skin.txt\nFormat=AllVDesks Bottom: &(Word(BarPos, 2) + 1) Flat Left: &(Word(BarPos, 1)) Right: &(Word(BarPos, 1) + 1) ToolTips Top: &(Word(BarPos, 2)) TopMost")
+
+; Add the appropriate items to the bar. A script call is used for each
+; item, resulting in much more compact code. The AddItem routine can be
+; found towards the end of this script.
+
+; .@AddItem(ToolTip, command, parameters, RGB values of text colour)
+
+.@AddItem("Move", "*Format", "Drag")
+.@AddItem("Help", ".&(ScriptName)@Help")
+.@AddItem("Close", ".&(ScriptName)")
+.@AddItem("Copy mouse position", ".&(ScriptName)@CopyMousePos")
+.@AddItem("Move", "*Format", "Drag")
+.@AddItem("Copy red RGB component", ".&(ScriptName)@CopyRedValue", "", 255)
+.@AddItem("Copy green RGB component", ".&(ScriptName)@CopyGreenValue", "", 0, 128)
+.@AddItem("Copy blue RGB component", ".&(ScriptName)@CopyBlueValue", "", 0, 0, 255)
+.@AddItem("Copy all RGB values", ".&(ScriptName)@CopyRGBValues")
+.@AddItem("Copy hex value", ".&(ScriptName)@CopyHexValue")
+
+; Show the bar.
+
+Bar.Show(CmdList)
+
+; We will now ascertain the handle of the bar so that we can keep track
+; of whether the bar is still visible, hidden or destroyed. This is
+; necessary because we must constantly run script code while the bar is
+; displayed in order to update the values. In addition to this, some
+; variable cleanup is necessary when the bar is hidden or destroyed to
+; ensure proper function of the bar.
+
+Local HandleList = Win.HandleList(CmdList, 1)
+For(Local HandleIter = 1; ; HandleIter = HandleIter + 1)
+    If(Win.Class(Word(HandleList, HandleIter)) == "PowerProToolbar") Do
+        Static Handle = Word(HandleList, HandleIter)
+        Break
+    EndIf
+EndFor
+
+; Prepare some variables to hold colour and mouse position information.
+
+Static Hex = ""
+Static MouseXPos = ""
+Static MouseYPos = ""
+Static Pixel = ""
+
+; The code below is executed once when the bar has finished being built,
+; and then looped repeatedly until the bar is no longer visible.
+
+@Update
+
+; We only want to keep track of the bar's position and perform updates
+; to the bar if it is visible.
+
+    If(VisibleWindow(Handle)) Do
+        BarPos = "&(Win.Left(CmdList)) &(Win.Top(CmdList))"
+
+; Update the values on the bar only if the Ctrl key is pressed.
+
+        If(Ctrl) Do
+            MouseXPos = XMouse
+            MouseYPos = YMouse
+            Pixel = Win.GetPixel(MouseXPos, MouseYPos)
+            CL.SetLabel(CmdList, 3, "&(MouseXPos), &(MouseYPos)")
+            CL.SetBackColor(CmdList, 4, Word(Pixel, 1), Word(Pixel, 2), Word(Pixel, 3))
+            CL.SetLabel(CmdList, 5, Word(Pixel, 1))
+            CL.SetLabel(CmdList, 6, Word(Pixel, 2))
+            CL.SetLabel(CmdList, 7, Word(Pixel, 3))
+            Hex = Fill("#000000", .@Hex((256 * ((256 * Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
+            CL.SetLabel(CmdList, 9, Hex)
+        EndIf
+    
+; We want to repeat the above code for as long as the bar is visible.
+; If the Ctrl key is held down, we want to repeat the code immediately;
+; otherwise we will wait 250ms and then check the Ctrl key and the bar
+; position again.
+
+        Event.CreateMS(250 - (249 * Ctrl), 1, ".&(ScriptName)@Update")
+    Else
+
+; If the bar has been hidden then we want to destroy it.
+
+        If(AnyWindow(Handle)) Do
+                .&(ScriptName)
+        Else
+
+; If we are at this point in the script, then the bar has been
+; destroyed. This can happen either when the user has explicitly asked
+; that the bar be destroyed, or when a PowerPro reconfigure has taken
+; place.
+
+            If(CmdList) Do
+
+; If the CmdList variable still holds the name of the previously
+; existent ColourSpy bar, then a reconfigure has taken place. We should
+; reopen the bar.
+
+                CmdList = ""
+                .&(ScriptName)
+
+; Otherwise, the bar was closed properly. We should save the bar's
+; position and then quit.
+
+            Else
+                File.WriteAll(BarPosSavePath, BarPos)
+            EndIf
+        EndIf
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@AddItem
+
+; The AddItem routine is called during the ColourSpy bar creation and is
+; used purely for more compact code. One call to @AddItem is equivalent
+; to 3 or 4 separate CL.Function() calls.
+
+    Local ItemIndex = CL.Length(CmdList)
+    CL.Insert(CmdList, ItemIndex)
+    CL.SetToolTip(CmdList, ItemIndex, Arg(1))
+    CL.AddLeft(CmdList, ItemIndex, Arg(2), Arg(3))
+    If(Arg(0) > 3)
+        CL.SetTextColor(CmdList, ItemIndex, Arg(4), Arg(5), Arg(6))
+    Quit
+; ______________________________________________________________________
+
+@Hex
+
+; The Hex routine returns is used by the Update routine to convert the
+; currently shown colour into hex.
+
+    If(Arg(1) < 16)
+        Quit(Select("0123456789ABCDEF", Arg(1) + 1, Arg(1) + 1))
+
+    Quit(.@Hex(Arg(1) / 16) ++ Select("0123456789ABCDEF", (Arg(1) % 16) + 1, (Arg(1) % 16) + 1))
+; ______________________________________________________________________
+
+@Help
+
+; The Help routine is called when the user clicks the ‘?’ button on the
+; bar. It displays version information and lets the user know how to
+; operate the bar.
+
+; Because the bar is set to display on top of other windows, it is
+; necessary to set the message box to do the same, since it may
+; otherwise be obscured by the ColourSpy bar.
+
+    Event.CreateMS(1, 0, "Win.OnTop(\"ColourSpy v3.0\", 1)\nEvent.DestroyThis", "VisibleWindow(\"ColourSpy v3.0\")")
+    MessageBox("Information", "ColourSpy v3.0\nWritten by Alex Peters, 10/7/2004\n\nHold down Ctrl to capture colours.\nClick elements on the display to copy them to the clipboard.\n\nQuestions and comments are welcome at PowerPro's Yahoo! Group:\nhttp://groups.yahoo.com/group/power-pro/", "ColourSpy v3.0")
+    Quit
+; ______________________________________________________________________
+
+@CopyMousePos
+
+; The CopyMousePos routine copies the displayed mouse position to the
+; clipboard in the form ‘X Y’. If no values have been displayed on the
+; bar yet, a message is displayed instead.
+
+    If(Pixel) Do
+        Clip.Set("&(MouseXPos) &(MouseYPos)")
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@CopyRedValue
+
+; The CopyRedValue routine copies the displayed red RGB component value
+; to the clipboard. If no values have been displayed on the bar yet, a
+; message is shown instead.
+
+    If(Pixel) Do
+        Clip.Set(Word(Pixel, 1))
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@CopyGreenValue
+
+; The CopyGreenValue routine copies the displayed green RGB component
+; value to the clipboard. If no values have been displayed on the bar
+; yet, a message is shown instead.
+
+    If(Pixel) Do
+        Clip.Set(Word(Pixel, 2))
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@CopyBlueValue
+
+; The CopyBlueValue routine copies the displayed blue RGB component
+; value to the clipboard. If no values have been displayed on the bar
+; yet, a message is shown instead.
+
+    If(Pixel) Do
+        Clip.Set(Word(Pixel, 3))
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@CopyRGBValues
+
+; The CopyRGBValues routine copies all displayed RGB values to the
+; clipboard in the form ‘RRR GGG BBB’. If no values have been displayed
+; on the bar yet, a message is shown instead.
+
+    If(Pixel) Do
+        Clip.Set(Pixel)
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
+
+@CopyHexValue
+
+; The CopyHexValue routine copies the displayed hex value to the
+; clipboard. If no values have been displayed on the bar yet, a message
+; is shown instead.
+
+    If(Pixel) Do
+        Clip.Set(Hex)
+    Else
+        .@Help
+    EndIf
+    Quit
+; ______________________________________________________________________
