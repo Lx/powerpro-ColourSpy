@@ -1,0 +1,68 @@
+ 
+[ColourSpy]
+G 624648 196612 0 0 0 0 0 127 0 0 0 
+"" 0,ColourSpy.icl*Move
+L 50000 *Format Drag!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8192 4 16711680 0
+"" 1,ColourSpy.icl*Close
+L 50000 .ColourSpy@Toggle !`
+M 50000 (none)!`
+R 50000 .Bars@ShowMenu !`
+F 0 0 0 0
+"" *None
+L 50000 *Format BarVerticalLine!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 0 0 0 0
+"" *None
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8256 16 255 0
+"" *None
+L 50000 *Format BarVerticalLine!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 64 0 0 0
+"" *None
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8288 27 255 0
+"" *None
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8288 24 32768 0
+"" *None
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8288 20 16711680 0
+"" 2,ColourSpy.icl*Copy RGB values to clipboard
+L 50000 .ColourSpy@CopyRGB !`
+M 50000 (none)!`
+R 50000 (none)!`
+F 96 20 16711680 0
+"" *None
+L 50000 *Format BarVerticalLine!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 64 0 0 0
+"" *None
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8256 55 16711680 0
+"" 2,ColourSpy.icl*Copy hex value to clipboard
+L 50000 .ColourSpy@CopyHex !`
+M 50000 (none)!`
+R 50000 (none)!`
+F 96 20 16711680 0
+" Hold Ctrl to capture colours." *ColourSpy v1.0 — Written by Alex Peters
+L 50000 (none)!`
+M 50000 (none)!`
+R 50000 (none)!`
+F 8192 204 16711680 0

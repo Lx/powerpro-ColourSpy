@@ -1,0 +1,83 @@
+; ColourSpy v1.0
+; Written by Alex Peters, 21/8/2003
+; ______________________________________________________________________
+
+@Toggle
+
+    Static ColourSpyEventHandle
+
+    If(Event.Exists(ColourSpyEventHandle)) Do
+        Event.Destroy(ColourSpyEventHandle)
+        ColourSpyEventHandle = ""
+        *Bar Close ColourSpy
+    Else
+        ColourSpyEventHandle = Event.CreateMS(1, 0, '+
+            "If(Ctrl)'r.ColourSpy@Update")
+        Static ColourSpyBegin = 0
+        *Bar Show ColourSpy
+    EndIf
+
+Quit
+
+@Update
+
+    If(Not ColourSpyBegin) Do
+
+        ColourSpyBegin = 1
+
+        *Format Item List ColourSpy Item 4 Hide 0
+        *Format Item List ColourSpy Item 5 Hide 0
+        *Format Item List ColourSpy Item 6 Hide 0
+        *Format Item List ColourSpy Item 7 Hide 0
+        *Format Item List ColourSpy Item 8 Hide 0
+        *Format Item List ColourSpy Item 9 Hide 0
+        *Format Item List ColourSpy Item 10 Hide 0
+        *Format Item List ColourSpy Item 11 Hide 0
+        *Format Item List ColourSpy Item 12 Hide 0
+        *Format Item List ColourSpy Item 13 Hide 1
+
+    EndIf
+
+    Static Pixel = Win.GetPixel(XMouse, YMouse)
+
+    Do("Format Item List ColourSpy Item 4 OwnBack 1 " ++ '+
+        "ColorBack", (256 * ((256 * Word(Pixel, 3)) + Word(Pixel, '+
+        2))) + Word(Pixel, 1))
+
+    Do("Format Item List ColourSpy Item 6 Text", " " ++ '+
+        Word(Pixel, 1) ++ ",")
+    Do("Format Item List ColourSpy Item 7 Text", Word(Pixel, '+
+        2) ++ ",")
+    Do("Format Item List ColourSpy Item 8 Text", Word(Pixel, '+
+        3))
+
+    Static Hex = Fill("#000000", .ColourSpy@Hex((256 * ((256 * '+
+        Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
+    Do("Format Item List ColourSpy Item 11 Text", " " ++ Hex)
+
+Quit
+
+@CopyRGB
+
+    Static Pixel
+    Clip.Set("R: " ++ Word(Pixel, 1) ++ "; G: " ++ Word(Pixel, 2) ++ '+
+        "; B: " ++ Word(Pixel, 3))
+
+Quit
+
+@CopyHex
+
+    Static Hex
+    Clip.Set(Hex)
+
+Quit
+
+@Hex
+
+    If(Arg(1) < 16)
+        Quit(Select("0123456789ABCDEF", Arg(1) + 1, Arg(1) + 1)
+
+    Local Mod16 = (Arg(1) % 16) + 1
+
+Quit(.ColourSpy@Hex(Arg(1) / 16) ++ Select("0123456789ABCDEF", Mod16, '+
+    Mod16))
