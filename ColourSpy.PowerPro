@@ -1,12 +1,12 @@
 ; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-; ColourSpy v3.0
-; Written by Alex Peters, 10/7/2004
+; ColourSpy v3.1
+; Written by Alex Peters, 5/10/2004
 ; ______________________________________________________________________
 
 ; ColourSpy will save the position of its bar to the location specified
 ; below.
 
-Static BarPosSavePath = PProFolder ++ "CS_BarPosSave.txt"
+Static BarPosSavePath = PProFolder ++ ?"CS_BarPosSave.txt"
 
 ; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ; The CmdList variable holds the name of the command list that is
@@ -26,8 +26,8 @@ EndIf
 ; in use, find an available name in the form of ‘ColourSpy_XXX’ where
 ; XXX is a random 3-digit number.
 
-For(CmdList = "ColourSpy"; CL.Exists(CmdList))
-    CmdList = "ColourSpy_" ++ (Random(900) + 100)
+For(CmdList = ?"ColourSpy"; CL.Exists(CmdList))
+    CmdList = ?"ColourSpy_" ++ (Random(900) + 100)
 EndFor
 CL.Create(CmdList)
 
@@ -39,17 +39,15 @@ CL.Create(CmdList)
 
 Static BarPos
 If(BarPos == "") Do
-    If(ValidPath(BarPosSavePath)) Do
+    BarPos = ((XScreen - 135) / 2) ++ ?" " ++ ((YScreen - 187) / 2)
+    If(ValidPath(BarPosSavePath))
         BarPos = File.ReadAll(BarPosSavePath)
-    Else
-        BarPos = "&((XScreen - 135) / 2) &((YScreen - 187) / 2)"
-    EndIf
 EndIf
 
 ; Set some properties for the bar including its skin file, its position,
 ; etc.
 
-CL.SetProperties(CmdList, "Skin=ColourSpy\\Skin.txt\nFormat=AllVDesks Bottom: &(Word(BarPos, 2) + 1) Flat Left: &(Word(BarPos, 1)) Right: &(Word(BarPos, 1) + 1) ToolTips Top: &(Word(BarPos, 2)) TopMost")
+CL.SetProperties(CmdList, ?"Skin=ColourSpy\Skin.txt" ++ Esc(?"\n", ?"\") ++ ?"Format=AllVDesks Bottom: " ++ (Word(BarPos, 2) + 1) ++ ?" Flat Left: " ++ (Word(BarPos, 1)) ++ ?" Right: " ++ (Word(BarPos, 1) + 1) ++ ?" ToolTips Top: " ++ (Word(BarPos, 2)) ++ ?" TopMost")
 
 ; Add the appropriate items to the bar. A script call is used for each
 ; item, resulting in much more compact code. The AddItem routine can be
@@ -57,16 +55,16 @@ CL.SetProperties(CmdList, "Skin=ColourSpy\\Skin.txt\nFormat=AllVDesks Bottom: &(
 
 ; .@AddItem(ToolTip, command, parameters, RGB values of text colour)
 
-.@AddItem("Move", "*Format", "Drag")
-.@AddItem("Help", ".&(ScriptName)@Help")
-.@AddItem("Close", ".&(ScriptName)")
-.@AddItem("Copy mouse position", ".&(ScriptName)@CopyMousePos")
-.@AddItem("Move", "*Format", "Drag")
-.@AddItem("Copy red RGB component", ".&(ScriptName)@CopyRedValue", "", 255)
-.@AddItem("Copy green RGB component", ".&(ScriptName)@CopyGreenValue", "", 0, 128)
-.@AddItem("Copy blue RGB component", ".&(ScriptName)@CopyBlueValue", "", 0, 0, 255)
-.@AddItem("Copy all RGB values", ".&(ScriptName)@CopyRGBValues")
-.@AddItem("Copy hex value", ".&(ScriptName)@CopyHexValue")
+.@AddItem(?"Move", ?"*Format", ?"Drag")
+.@AddItem(?"Help", ?"." ++ ScriptName ++ ?"@Help")
+.@AddItem(?"Close", ?"." ++ ScriptName)
+.@AddItem(?"Copy mouse position", ?"." ++ ScriptName ++ ?"@CopyMousePos")
+.@AddItem(?"Move", ?"*Format", ?"Drag")
+.@AddItem(?"Copy red RGB component", ?"." ++ ScriptName ++ ?"@CopyRedValue", "", 255)
+.@AddItem(?"Copy green RGB component", ?"." ++ ScriptName ++ ?"@CopyGreenValue", "", 0, 128)
+.@AddItem(?"Copy blue RGB component", ?"." ++ ScriptName ++ ?"@CopyBlueValue", "", 0, 0, 255)
+.@AddItem(?"Copy all RGB values", ?"." ++ ScriptName ++ ?"@CopyRGBValues")
+.@AddItem(?"Copy hex value", ?"." ++ ScriptName ++ ?"@CopyHexValue")
 
 ; Show the bar.
 
@@ -81,7 +79,7 @@ Bar.Show(CmdList)
 
 Local HandleList = Win.HandleList(CmdList, 1)
 For(Local HandleIter = 1; ; HandleIter = HandleIter + 1)
-    If(Win.Class(Word(HandleList, HandleIter)) == "PowerProToolbar") Do
+    If(Win.Class(Word(HandleList, HandleIter)) == ?"PowerProToolbar") Do
         Static Handle = Word(HandleList, HandleIter)
         Break
     EndIf
@@ -103,7 +101,7 @@ Static Pixel = ""
 ; to the bar if it is visible.
 
     If(VisibleWindow(Handle)) Do
-        BarPos = "&(Win.Left(CmdList)) &(Win.Top(CmdList))"
+        BarPos = Win.Left(CmdList) ++ ?" " ++ Win.Top(CmdList)
 
 ; Update the values on the bar only if the Ctrl key is pressed.
 
@@ -111,12 +109,12 @@ Static Pixel = ""
             MouseXPos = XMouse
             MouseYPos = YMouse
             Pixel = Win.GetPixel(MouseXPos, MouseYPos)
-            CL.SetLabel(CmdList, 3, "&(MouseXPos), &(MouseYPos)")
+            CL.SetLabel(CmdList, 3, MouseXPos ++ ?", " ++ MouseYPos)
             CL.SetBackColor(CmdList, 4, Word(Pixel, 1), Word(Pixel, 2), Word(Pixel, 3))
             CL.SetLabel(CmdList, 5, Word(Pixel, 1))
             CL.SetLabel(CmdList, 6, Word(Pixel, 2))
             CL.SetLabel(CmdList, 7, Word(Pixel, 3))
-            Hex = Fill("#000000", .@Hex((256 * ((256 * Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
+            Hex = Fill(?"#000000", .@Hex((256 * ((256 * Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
             CL.SetLabel(CmdList, 9, Hex)
         EndIf
     
@@ -125,13 +123,13 @@ Static Pixel = ""
 ; otherwise we will wait 250ms and then check the Ctrl key and the bar
 ; position again.
 
-        Event.CreateMS(250 - (249 * Ctrl), 1, ".&(ScriptName)@Update")
+        Event.CreateMS(250 - (249 * Ctrl), 1, ?"." ++ ScriptName ++ ?"@Update")
     Else
 
 ; If the bar has been hidden then we want to destroy it.
 
         If(AnyWindow(Handle)) Do
-                .&(ScriptName)
+                Do(?"." ++ ScriptName)
         Else
 
 ; If we are at this point in the script, then the bar has been
@@ -146,7 +144,7 @@ Static Pixel = ""
 ; reopen the bar.
 
                 CmdList = ""
-                .&(ScriptName)
+                Do(?"." ++ ScriptName)
 
 ; Otherwise, the bar was closed properly. We should save the bar's
 ; position and then quit.
@@ -180,9 +178,9 @@ Static Pixel = ""
 ; currently shown colour into hex.
 
     If(Arg(1) < 16)
-        Quit(Select("0123456789ABCDEF", Arg(1) + 1, Arg(1) + 1))
+        Quit(Select(?"0123456789ABCDEF", Arg(1) + 1, Arg(1) + 1))
 
-    Quit(.@Hex(Arg(1) / 16) ++ Select("0123456789ABCDEF", (Arg(1) % 16) + 1, (Arg(1) % 16) + 1))
+    Quit(.@Hex(Arg(1) / 16) ++ Select(?"0123456789ABCDEF", (Arg(1) % 16) + 1, (Arg(1) % 16) + 1))
 ; ______________________________________________________________________
 
 @Help
@@ -195,8 +193,9 @@ Static Pixel = ""
 ; necessary to set the message box to do the same, since it may
 ; otherwise be obscured by the ColourSpy bar.
 
-    Event.CreateMS(1, 0, "Win.OnTop(\"ColourSpy v3.0\", 1)\nEvent.DestroyThis", "VisibleWindow(\"ColourSpy v3.0\")")
-    MessageBox("Information", "ColourSpy v3.0\nWritten by Alex Peters, 10/7/2004\n\nHold down Ctrl to capture colours.\nClick elements on the display to copy them to the clipboard.\n\nQuestions and comments are welcome at PowerPro's Yahoo! Group:\nhttp://groups.yahoo.com/group/power-pro/", "ColourSpy v3.0")
+    Local LF = Esc(?"\n", ?"\")
+	Event.CreateMS(1, 0, ?'Win.OnTop(?"ColourSpy v3.0", 1)' ++ LF ++ ?"Event.DestroyThis", ?'VisibleWindow(?"ColourSpy v3.0")')
+    MessageBox(?"Information", ?"ColourSpy v3.1" ++ LF ++ ?"Written by Alex Peters, 5/10/2004" ++ LF ++ LF ++ ?"Hold down Ctrl to capture colours." ++ LF ++ ?"Click elements on the display to copy them to the clipboard." ++ LF ++ LF ++ ?"Questions and comments are welcome at PowerPro's Yahoo! Group:" ++ LF ++ ?"http://groups.yahoo.com/group/power-pro/", ?"ColourSpy v3.0")
     Quit
 ; ______________________________________________________________________
 
@@ -207,7 +206,7 @@ Static Pixel = ""
 ; bar yet, a message is displayed instead.
 
     If(Pixel) Do
-        Clip.Set("&(MouseXPos) &(MouseYPos)")
+        Clip.Set(MouseXPos ++ ?" " ++ MouseYPos)
     Else
         .@Help
     EndIf

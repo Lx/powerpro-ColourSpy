@@ -1,8 +1,8 @@
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ColourSpy
 ¯¯¯¯¯¯¯¯¯
-Version 3.0
-Saturday, 10 July 2004
+Version 3.1
+Tuesday, 5 October 2004
 ________________________________________________________________________
 
 What?
@@ -26,16 +26,15 @@ ________________________________________________________________________
 
 Requirements
 ¯¯¯¯¯¯¯¯¯¯¯¯
-The scripts in this package use features found only in PowerPro versions
-v3.8.16 and above. The scripts conform to standard configuration, so you
-must have the appropriate option selected in your Advanced Setup.
+The script in this package uses features found only in PowerPro versions
+v4.1 and above.
 ________________________________________________________________________
 
 Installation
 ¯¯¯¯¯¯¯¯¯¯¯¯
-1. If you already have a copy of ColourSpy installed in your PowerPro
-   configuration, then you will need to completely remove it since this
-   version uses an entirely different approach.
+1. If you already have a copy of ColourSpy v2.0 or earlier installed in
+   your PowerPro configuration, then you will need to completely remove
+   it since this version uses an entirely different approach.
 
    * Remove all references to the ColourSpy bar from your hotkeys and
      other bars.
@@ -101,49 +100,54 @@ ________________________________________________________________________
 
 Version History
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+v3.1 (5/10/2004)
+*  The script no longer conforms to Standard Configuration and should
+   now function without modification on any PowerPro v4.1 configuration
+
 v3.0 (10/7/2004)
-* Bar:
-  * The bar is no longer stored in the .PCF and so a script call is now
-    required again to show and hide the bar -- *Bar Show, *Bar Hide,
-    etc. commands will no longer work
-  * Clicking on empty information fields now results in an explanation
-    message being displayed instead of an error
-  * Added the ability to drag the bar from the colour patch
-* Script:
-  * Complete rewrite
-* Documentation:
-  * Split Usage section into Invoking and Usage sections
+*  Bar:
+   *  The bar is no longer stored in the .PCF and so a script call is
+      now required again to show and hide the bar -- *Bar Show, *Bar
+      Hide, etc. commands will no longer work
+   *  Clicking on empty information fields now results in an explanation
+      message being displayed instead of an error
+   *  Added the ability to drag the bar from the colour patch
+*  Script:
+   *  Complete rewrite
+*  Documentation:
+   *  Split Usage section into Invoking and Usage sections
 
 v2.0 (10/11/2003)
-* Bar:
-  * Complete visual redesign -- a skin is now used for greater control
-    of element placement
-  * Added the ability to copy individual RGB components to the clipboard
-  * Multiple values copied to the clipboard are now only separated by
-    spaces -- this will aid those who wish to create a script, for
-    example, that processes the values on the clipboard
-  * A script call is no longer required in order to successfully show
-    and hide the bar -- the conventional *Bar Show, *Bar Hide, etc.
-    commands now work
-* Script:
-  * Complete rewrite
+*  Bar:
+   *  Complete visual redesign -- a skin is now used for greater control
+      of element placement
+   *  Added the ability to copy individual RGB components to the
+      clipboard
+   *  Multiple values copied to the clipboard are now only separated by
+      spaces -- this will aid those who wish to create a script, for
+      example, that processes the values on the clipboard
+   *  A script call is no longer required in order to successfully show
+      and hide the bar -- the conventional *Bar Show, *Bar Hide, etc.
+      commands now work
+*  Script:
+   *  Complete rewrite
 
 v1.2 (22/8/2003)
-* Bar:
-  * Introduced mouse co-ordinates section
-* Script:
-  * Improved bar formatting code
-* Documentation:
-  * Added installation step for upgrading
+*  Bar:
+   *  Introduced mouse co-ordinates section
+*  Script:
+   *  Improved bar formatting code
+*  Documentation:
+   *  Added installation step for upgrading
 
 v1.1 (22/8/2003)
-* Bar import file:
-  * Removed redundant lines
-* Bar:
-  * Removed right-click functionality of Close button
-* Documentation:
-  * Corrected typo
+*  Bar import file:
+   *  Removed redundant lines
+*  Bar:
+   *  Removed right-click functionality of Close button
+*  Documentation:
+   *  Corrected typo
 
 v1.0 (21/8/2003)
-* Initial Release
+*  Initial release
 ________________________________________________________________________
