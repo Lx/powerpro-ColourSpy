@@ -1,0 +1,13 @@
+*Skin Author "Alex Peters" Created 8/11/2003 Title ColourSpy
+*Bar Shape Back.bmp
+*Font 0 Name "Trebuchet MS" Size 9
+*Button ID 0 Left 4 Top 4 Width 90 Height 21 No3D NoText
+*Button ID 1 Left 96 Top 7 Width 16 Height 15 NoText
+*Button ID 2 Left 112 Top 7 Width 16 Height 15 NoText
+*Button ID 3 Left 53 Top 37 Width 72 Height 21 TextPos Center TextWidth 69 TextTop 1
+*Button ID 4 Left 11 Top 67 Width 113 Height 30 No3D NoText
+*Button ID 5 Left 38 Top 106 Width 29 Height 21 TextPos Center TextWidth 29 TextTop 1
+*Button ID 6 Left 67 Top 106 Width 29 Height 21 TextPos Center TextWidth 29 TextTop 1
+*Button ID 7 Left 96 Top 106 Width 29 Height 21 TextPos Center TextWidth 29 TextTop 1
+*Button ID 8 Left 38 Top 127 Width 87 Height 21 NoText
+*Button ID 9 Left 38 Top 156 Width 87 Height 21 TextPos Center TextTop 1

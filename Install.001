@@ -1,0 +1,25 @@
+[ColourSpy]
+G 67209216 0 0 0 0 0 0 127 0 0 0 ColourSpy\Skin.txt
+"*Info expr(.ColourSpy@Invoke)" *Move (hold down Ctrl)
+L 50000 MessageBox ("Information", "To move the ColourSpy bar, hold down the Ctrl key and drag.", "ColourSpy v2.0")
+"" *Help
+L 50000 .ColourSpy@Help
+"" *Close
+L 50000 *Bar Close ColourSpy
+"" *Copy mouse position
+L 50000 .ColourSpy@CopyXY
+"" *None
+F 8192 0 0 16777215
+"" *Copy red RGB component
+L 50000 .ColourSpy@CopyR
+F 32 0 255 0
+"" *Copy green RGB component
+L 50000 .ColourSpy@CopyG
+F 32 0 32768 0
+"" *Copy blue RGB component
+L 50000 .ColourSpy@CopyB
+F 32 0 16711680 0
+"" *Copy all RGB values
+L 50000 .ColourSpy@CopyRGB
+"" *Copy hex value
+L 50000 .ColourSpy@CopyHex

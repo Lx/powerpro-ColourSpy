@@ -1,8 +1,8 @@
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ColourSpy
 ¯¯¯¯¯¯¯¯¯
-Version 1.2
-Friday, 22 August 2003
+Version 2.0
+Monday, 10 November 2003
 ________________________________________________________________________
 
 What?
@@ -32,68 +32,60 @@ the new version of this plugin at:
 
 > http://www.windowspowerpro.com/download/win.zip
 
-The Events plugin (included with PowerPro) is used while the Ctrl key is
-held down. This plugin is limited to 50 simultaneous events. So your
-PowerPro configuration must use less than 50 simultaneous events. :-)
+The ‘Use Quote for Escape in Expression Strings’ checkbox, found under
+Setup > Advanced Setup > Characters, must be ticked for the script to
+work. This option is not ticked by default.
 ________________________________________________________________________
 
 Installation
 ¯¯¯¯¯¯¯¯¯¯¯¯
 1. If you already have a copy of ColourSpy installed in your PowerPro
-   configuration:
+   configuration, then you may wish to remove:
 
-   * Remove the ColourSpy bar from your configuration.
-   * Remove the ColourSpy.txt file from your Scripts folder.
-   * Remove the ColourSpy.icl file from your PowerPro folder.
+   * the ColourSpy.txt file from your Scripts folder
+   * the ColourSpy.icl file from your PowerPro folder
 
-2. Extract the ColourSpy.icl file into the folder where your PowerPro
-   configuration (.PCF file) is located.
-   (Usually ‘C:\Program Files\PowerPro’)
+   as these files are no longer used.
 
-3. Extract the ColourSpy.txt file into your Scripts folder.
-   (Usually ‘C:\Program Files\PowerPro\Scripts’)
+2. Extract the contents of the archive into a temporary folder and
+   double-click the Install script. PowerPro must be running in order
+   to do this.
 
-4. Import the ColourSpyBar.txt file into your chosen PowerPro
-   configuration.
-
-5. Set up a method of showing the bar. The bar can be toggled using the
-   PowerPro command ‘.ColourSpy@Toggle’.
-
-The ColourSpy bar will not function if ‘Auto Show as Bar’ is ticked, or
-if the bar is shown using e.g. ‘*Bar Show ColourSpy’. You must use the
-command ‘.ColourSpy@Toggle’ for correct functionality.
-
-You can emulate ‘Auto Show as Bar’ behaviour, if you wish, by adding a
-startup entry on the Scheduler tab of PowerPro Configuration, for
-‘.ColourSpy@Toggle’.
+The installation script will attempt to detect the current configuration
+and assume that you would like to install ColourSpy to this .PCF file,
+but you have the option of selecting your own .PCF file during the
+installation.
 ________________________________________________________________________
 
 Usage
 ¯¯¯¯¯
-To display the ColourSpy bar, use your selected method for executing the
-command ‘.ColourSpy@Toggle’.
+The ColourSpy bar can be shown and hidden like any normal PowerPro bar,
+through the use of *Bar Show, *Bar Hide, etc. commands. It can also be
+set to ‘Auto Show as Bar’, should you wish.
 
 Hold down the Ctrl key for the bar to capture colours.
 
-* The grip on the extreme left allows you to relocate the bar.
-* The ‘X’ icon will close the bar.
+Click on any numerical elements to copy those elements to the clipboard.
 
-* The ‘Copy’ icons will copy the values to the left of them, to the
-  clipboard. These won't be visible until you have pressed Ctrl.
+To move the ColourSpy bar to a new position on screen, hold down the
+Ctrl key and drag. A later version will include the ability to drag the
+title text, similar to standard windows.
 ________________________________________________________________________
 
 To Conclude
 ¯¯¯¯¯¯¯¯¯¯¯
-Thanks to Bruce for coming up with a great hex conversion script -- the
-bar wouldn't be able to show hex values otherwise!
-
-I'd really like to know if any of my PowerPro work goes to use, so
-please feel free to Email me with any questions or comments you may
-have. You can reach me through the Yahoo! PowerPro group, at:
+I'd really like to know if you need any help with this script, or if it
+grows on you, so please feel free to Email me with any questions or
+comments that you may have. My Email address can be found through the
+PowerPro Yahoo! group, at:
 
 > http://groups.yahoo.com/group/power-pro/
 
-Lastly, a special thanks to Bruce Switzer for PowerPro! :-)
+...or you can just leave a message at the Group -- there's a good chance
+that I'll see it just as quickly.
+
+Thanks to David Troesch for testing, and logical thought patterns, and
+to Bruce for coming up with a great hex conversion script.
 
 Best regards,
 Alex Peters
@@ -101,6 +93,20 @@ ________________________________________________________________________
 
 Version History
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+v2.0 (10/11/2003)
+* Bar:
+  * Complete visual redesign -- a skin is now used for greater control
+    of element placement
+  * Added the ability to copy individual RGB components to the clipboard
+  * Multiple values copied to the clipboard are now only separated by
+    spaces -- this will aid those who wish to create a script, for
+    example, that processes the values on the clipboard
+  * A script call is no longer required in order to successfully show
+    and hide the bar -- the conventional *Bar Show, *Bar Hide, etc.
+    commands now work
+* Script:
+  * Complete rewrite
+
 v1.2 (22/8/2003)
 * Bar:
   * Introduced mouse co-ordinates section

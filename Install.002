@@ -1,0 +1,157 @@
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; ColourSpy v2.0
+; Written by Alex Peters, 10/11/2003
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The Toggle routine is included for backward compatibility. It opens
+; and closes the ColourSpy bar.
+
+; This version of ColourSpy does not require a script call to open and
+; close the bar. It will work flawlessly after a conventional *Bar Show,
+; *Bar Hide, etc. command.
+
+@Toggle
+
+    Do("*Bar " ++ IfElse(.@BarVisible, "Close", "Show"), "ColourSpy")
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The BarVisible routine returns 1 if the ColourSpy bar is on screen, or
+; 0 if not.
+
+; It is possible to do a VisibleWindow("ColourSpy") to achieve the same
+; effect, but it is not nearly as reliable. For example, that could
+; return 1 if the ColourSpy bar is in fact not open, if an Explorer
+; window were open at the time.
+
+@BarVisible
+
+    Static Handle
+
+    If(VisibleWindow(Handle))
+        Quit(1)
+
+    Local Bars = Win.HandleList("ColourSpy", 0)
+    For(Local Iter = 1; ; Iter = Iter + 1)
+        Local Bar = Word(Bars, Iter)
+        If(Win.Class(Bar) == "PowerProToolbar") Do
+            Handle = Bar
+            Quit(1)
+        EndIf
+        If(Not(Bar)) Do
+            Handle = 0
+            Quit(0)
+        EndIf
+    EndFor
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The Help routine is called when the user clicks the ‘?’ button on the
+; bar. It displays version information and lets the user know how to
+; operate the bar.
+
+@Help
+
+    MessageBox("Information", "ColourSpy v2.0'nWritten by Alex Peters, 10/11/2003'n'nHold down Ctrl to capture colours.'nClick elements on the display to copy them to the clipboard.'n'nQuestions and comments are welcome at PowerPro's Yahoo! Group:'nhttp://groups.yahoo.com/group/power-pro/", "ColourSpy v2.0")
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The Invoke routine is called when the bar is shown. It prepares the
+; script for action by monitoring the Ctrl key.
+
+@Invoke
+
+    Static UpdateCalled
+    If(.@BarVisible and Not(UpdateCalled))
+        .@Update
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The Update routine is repeatedly called while the ColourSpy bar is
+; open. It checks the status of the Ctrl key, and updates the values on
+; the bar if it is pressed.
+
+@Update
+
+    Static UpdateCalled = 1
+
+    If(Ctrl) Do
+
+        Static MousePos = XMouse ++ " " ++ YMouse
+        Static Pixel = Win.GetPixel(Word(MousePos, 1), Word(MousePos, 2))
+
+        Do("*Format Item List ColourSpy Item 4 Text", "'"" ++ Word(MousePos, 1) ++ ", " ++ Word(MousePos, 2) ++ "'"")
+
+        Do("*Format Item List ColourSpy Item 5 OwnBack 1 ColorBack", (256 * ((256 * Word(Pixel, 3)) + Word(Pixel, 2))) + Word(Pixel, 1))
+
+        Do("*Format Item List ColourSpy Item 6 Text", Word(Pixel, 1))
+        Do("*Format Item List ColourSpy Item 7 Text", Word(Pixel, 2))
+        Do("*Format Item List ColourSpy Item 8 Text", Word(Pixel, 3))
+
+        Static Hex = Fill("#000000", .@Hex((256 * ((256 * Word(Pixel, 1)) + Word(Pixel, 2))) + Word(Pixel, 3)))
+        Do("*Format Item List ColourSpy Item 10 Text", Hex)
+
+    EndIf
+
+  ; If the bar is still visible, then prepare for another loop of the
+  ; Update routine. Wait 250ms before the next run if the Ctrl key is
+  ; not pressed. Otherwise, loop immediately.
+
+    If(.@BarVisible) Do
+        Event.CreateMS(250 - (249 * Ctrl), 1, ".ColourSpy@Update")
+    Else
+        UpdateCalled = 0
+    EndIf
+
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The Hex routine returns is used by the Update routine to convert the
+; currently shown colour into hex.
+
+@Hex
+
+    If(Arg(1) < 16)
+        Quit(Select("0123456789ABCDEF", Arg(1) + 1, Arg(1) + 1))
+
+    Quit(.@Hex(Arg(1) / 16) ++ Select("0123456789ABCDEF", (Arg(1) % 16) + 1, (Arg(1) % 16) + 1))
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+; The following routines copy values to the clipboard. They are called
+; by the buttons on the bar.
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyRGB
+
+    Clip.Set(Pixel)
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyR
+
+    Clip.Set(Word(Pixel, 1))
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyG
+
+    Clip.Set(Word(Pixel, 2))
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyB
+
+    Clip.Set(Word(Pixel, 3))
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyHex
+
+    Clip.Set(Hex)
+    Quit
+
+; ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+@CopyXY
+
+    Clip.Set(MousePos)
+    Quit
+; ______________________________________________________________________
