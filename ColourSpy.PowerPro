@@ -194,8 +194,8 @@ Static Pixel = ""
 ; otherwise be obscured by the ColourSpy bar.
 
     Local LF = Esc(?"\n", ?"\")
-	Event.CreateMS(1, 0, ?'Win.OnTop(?"ColourSpy v3.0", 1)' ++ LF ++ ?"Event.DestroyThis", ?'VisibleWindow(?"ColourSpy v3.0")')
-    MessageBox(?"Information", ?"ColourSpy v3.1" ++ LF ++ ?"Written by Alex Peters, 5/10/2004" ++ LF ++ LF ++ ?"Hold down Ctrl to capture colours." ++ LF ++ ?"Click elements on the display to copy them to the clipboard." ++ LF ++ LF ++ ?"Questions and comments are welcome at PowerPro's Yahoo! Group:" ++ LF ++ ?"http://groups.yahoo.com/group/power-pro/", ?"ColourSpy v3.0")
+	Event.CreateMS(1, 0, ?'Win.OnTop(?"ColourSpy v3.1", 1)' ++ LF ++ ?"Event.DestroyThis", ?'VisibleWindow(?"ColourSpy v3.1")')
+    MessageBox(?"Information", ?"ColourSpy v3.1" ++ LF ++ ?"Written by Alex Peters, 5/10/2004" ++ LF ++ LF ++ ?"Hold down Ctrl to capture colours." ++ LF ++ ?"Click elements on the display to copy them to the clipboard." ++ LF ++ LF ++ ?"Questions and comments are welcome at PowerPro's Yahoo! Group:" ++ LF ++ ?"http://groups.yahoo.com/group/power-pro/", ?"ColourSpy v3.1")
     Quit
 ; ______________________________________________________________________
 
