@@ -47,11 +47,11 @@ Installation
 3. Create a folder named ColourSpy under your Skins folder, e.g.:
    C:\Program Files\PowerPro\Skins\ColourSpy
 
-3. Extract Back.bmp and Skin.txt to this newly created folder, e.g.:
+4. Extract Back.bmp and Skin.txt to this newly created folder, e.g.:
    C:\Program Files\PowerPro\Skins\ColourSpy\Back.bmp
    C:\Program Files\PowerPro\Skins\ColourSpy\Skin.txt
 
-4. Optionally modify the BarPosSavePath variable to point to your
+5. Optionally modify the BarPosSavePath variable to point to your
    desired location. This path will hold the position of the ColourSpy
    bar across PowerPro sessions.
 ________________________________________________________________________
